@@ -1,0 +1,101 @@
+#include <GL/glut.h>
+#include <windows.h>
+#include <stdio.h>
+#include <gl/glut.h>
+#include <windows.h>
+#include <stdlib.h>
+#include <gl/gl.h>
+#include <gl/glu.h>
+#include <gl/glut.h>
+#include <math.h>
+
+#define SCREENWIDTH 500
+#define SCREENHEIGHT 500
+#define PI 3.1415926535897932384626433832795
+
+void drawRectangle(int x, int y, int w, int h) {
+    glBegin(GL_POLYGON);
+    glVertex2d(x, y);
+    glVertex2d(x + w, y);
+    glVertex2d(x + w, y + h);
+    glVertex2d(x, y + h);
+    glEnd();
+}
+
+void drawCircle(int x, int y, int r, int n) {
+    //draw apple circle (modify r for size)
+    double inc = (2 * PI) / (double)n;
+    glBegin(GL_POLYGON);
+    for (double theta = 0.0; theta <= 2 * PI; theta += inc) {
+        glVertex2d(x + (r * 0.8) * cos(theta), y + (r * 0.8) * sin(theta));
+    }
+    glEnd();
+}
+
+void drawApple(int x, int y) {
+    //Apple1
+    glColor3ub(255, 0, 0);
+    drawCircle(230, 175, 30,30);
+    glColor3ub(150, 75, 0);
+    drawRectangle(225, 185, 7, 20);
+
+    //Apple2
+    glColor3ub(0, 255, 0);
+    drawCircle(280, 175, 30, 30);
+    glColor3ub(150, 75, 0);
+    drawRectangle(275, 185, 7, 20);
+
+    //Apple3
+    glColor3ub(255, 0, 0);
+    drawCircle(310, 175, 30, 30);
+    glColor3ub(150, 75, 0);
+    drawRectangle(305, 185, 7, 20);
+}
+
+void drawTable() {
+    //table base
+    glColor3ub(150, 75, 0);
+    drawRectangle(180, 30, 200, 120);
+    //banner holder(left)
+    glColor3ub(128, 128, 128);
+    drawRectangle(180, 150, 20, 120);
+    //banner holder(right)
+    glColor3ub(128, 128, 128);
+    drawRectangle(360, 150, 20, 120);
+    //banner
+    glColor3ub(255, 255, 255);
+    drawRectangle(155, 250, 250, 50);
+}
+
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT);
+    glPointSize(10.0);
+    glLineWidth(4.0);
+
+    // Draw and position on screen
+    drawApple(230, 175);
+    drawTable();
+
+    glEnd();
+    glFlush();
+    glutSwapBuffers();
+}
+
+void initGL() {
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0, SCREENWIDTH, 0, SCREENHEIGHT);
+}
+
+int main(int argc, char** argv) {
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInit(&argc, argv);
+    glutInitWindowSize(SCREENWIDTH, SCREENHEIGHT);
+    glutCreateWindow("Apple");
+    glutDisplayFunc(display);
+
+    initGL();
+
+    glutMainLoop();
+}
